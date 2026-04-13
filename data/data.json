@@ -1,0 +1,39 @@
+{
+  "projects": [
+    {
+      "id": "thrift",
+      "name": "Instagram Thrift Store",
+      "svgPath": "images/thrift.svg",
+      "markdown": "docs/thrift.md",
+      "date": "7 Apr 2026"
+    },
+    {
+      "id": "fitness",
+      "name": "Fitness Coaching Platform",
+      "svgPath": "images/fitness.svg",
+      "markdown": "docs/fitness.md",
+      "date": "8 Apr 2026"
+    },
+    {
+      "id": "clinic",
+      "name": "Clinic Appointment and Diagnostics Platform",
+      "svgPath": "images/clinic.svg",
+      "markdown": "docs/clinic.md",
+      "date": "9 Apr 2026"
+    },
+    {
+      "id": "comiccon",
+      "name": "Comic Con Parking System",
+      "svgPath":"images/comiccon.svg",
+      "markdown": "docs/comiccon.md",
+      "date": "10 Apr 2026"
+    },
+    {
+      "id": "elevator",
+      "name": "Smart Elevator Control",
+      "svgPath":"images/elevator.svg",
+      "markdown": "docs/elevator.md",
+      "date": "11 Apr 2026"
+    }
+  ]
+}
