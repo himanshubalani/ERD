@@ -57,38 +57,61 @@
             }
         }
     </script>
-</head>
 <body class="bg-background text-foreground font-mono antialiased overflow-hidden">
 
     <div class="flex flex-col h-screen">
         <!-- Top Navigation -->
-        <header class="h-16 border-b border-border bg-card flex items-center justify-between px-6 shrink-0">
-            <div>
-                <h1 class="text-xl font-bold tracking-tight">ER Presentations <span class="text-primary text-xs ml-2">v0.2.0</span></h1>
+        <header class="h-14 md:h-16 border-b border-border bg-card flex items-center justify-between px-4 md:px-6 shrink-0 z-40 relative">
+            <div class="flex items-center">
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 -ml-2 mr-2 text-muted-foreground hover:text-foreground transition-colors">
+                    <i data-lucide="menu" class="size-6"></i>
+                </button>
+                <h1 class="text-lg md:text-xl font-bold tracking-tight truncate">ER Presentations <span class="text-primary text-xs ml-1 md:ml-2 hidden sm:inline-block">v0.2.0</span></h1>
             </div>
-            <div class="text-sm text-muted-foreground">Web Dev Cohort Assignment Submissions by <a href="https://himanshubalani.com" class="text-primary hover:underline">himanshubalani</a></div>
+            <div class="text-xs md:text-sm text-muted-foreground hidden md:block truncate ml-4">
+                Web Dev Cohort Assignment Submissions by <a href="https://himanshubalani.com" class="text-primary hover:underline">himanshubalani</a>
+            </div>
         </header>
 
-        <!-- 2-Column Main Layout: Sidebar (Left) | Content (Right) -->
-        <main class="flex-1 grid grid-cols-[280px_1fr] overflow-hidden">
+        <!-- Main Layout (Flex instead of Grid to allow Absolute Mobile Sidebar) -->
+        <main class="flex-1 flex overflow-hidden relative w-full">
             
-            <!-- LEFT: Sidebar Navigation -->
-            <aside class="border-r border-border bg-muted/10 overflow-y-auto flex flex-col p-4 gap-4" id="sidebar-list">
-                <!-- Javascript will inject list items here -->
-                <div class="text-center text-muted-foreground text-sm mt-10">Loading diagrams...</div>
+            <!-- Mobile Overlay Background -->
+            <div id="sidebar-overlay" class="absolute inset-0 bg-background/80 backdrop-blur-sm z-20 hidden md:hidden transition-opacity"></div>
+
+            <!-- LEFT: Sidebar Navigation (Slide-out Drawer on Mobile) -->
+            <aside id="sidebar" class="absolute inset-y-0 left-0 z-30 w-72 md:w-[280px] border-r border-border bg-card md:bg-muted/10 transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex flex-col shadow-2xl md:shadow-none h-full">
+                
+                <!-- Mobile Sidebar Header -->
+                <div class="flex items-center justify-between p-4 border-b border-border md:hidden shrink-0">
+                    <span class="font-bold text-sm text-muted-foreground">ER Assignments</span>
+                    <button id="close-sidebar-btn" class="p-2 -mr-2 text-muted-foreground hover:text-foreground">
+                        <i data-lucide="x" class="size-5"></i>
+                    </button>
+                </div>
+
+                <div id="sidebar-list" class="flex flex-col p-4 gap-4 overflow-y-auto flex-1">
+                    <!-- Javascript will inject list items here -->
+                    <div class="text-center text-muted-foreground text-sm mt-10">Loading diagrams...</div>
+                </div>
+
+                <!-- Mobile Sidebar Footer Attribute -->
+                <div class="p-4 border-t border-border md:hidden shrink-0 text-center text-xs text-muted-foreground mt-auto">
+                    Submissions by <a href="https://himanshubalani.com" class="text-primary hover:underline">himanshubalani</a>
+                </div>
             </aside>
 
             <!-- RIGHT: Scrollable Page Container -->
-            <!-- Added overflow-y-auto here so the whole right side scrolls -->
-            <div class="h-full overflow-y-auto bg-card flex flex-col relative" id="right-scroll-container">
+            <!-- min-w-0 prevents flex items from breaking viewport width on mobile -->
+            <div class="flex-1 h-full w-full overflow-y-auto bg-card flex flex-col relative min-w-0" id="right-scroll-container">
                 
-                <!-- TOP: Canvas Area -->
-                <!-- Removed flex-1, gave it a height of 75vh and border-b -->
-                <section class="relative shrink-0 h-[75vh] min-h-[500px] bg-background canvas-grid group overflow-hidden border-b border-border">
+                <!-- TOP: Canvas Area (Responsive Heights) -->
+                <section class="relative shrink-0 h-[50vh] md:h-[75vh] min-h-[350px] md:min-h-[500px] bg-background canvas-grid group overflow-hidden border-b border-border touch-none">
                     <!-- Toolbar -->
                     <div class="absolute top-4 left-4 z-10 flex gap-2">
                         <button onclick="fitToPage()" class="flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-card/90 backdrop-blur border border-border hover:bg-muted transition-colors shadow-sm">
-                            <i data-lucide="maximize" class="size-3 mr-2"></i> Fit to Page
+                            <i data-lucide="maximize" class="size-3 mr-2"></i> <span class="hidden sm:inline">Fit to Page</span><span class="sm:hidden">Fit to Page</span>
                         </button>
                     </div>
 
@@ -100,17 +123,36 @@
                     </div>
 
                     <!-- Hint -->
-                    <div class="absolute bottom-4 right-4 px-3 py-1.5 bg-card/90 backdrop-blur border border-border rounded-full text-[10px] text-muted-foreground pointer-events-none z-10">
-                       DOUBLE TAP OR SCROLL TO ZOOM • DRAG TO PAN
+                    <div class="absolute bottom-4 right-4 px-3 py-1.5 bg-card/90 backdrop-blur border border-border rounded-full text-[10px] text-muted-foreground pointer-events-none z-10 text-center max-w-[200px] sm:max-w-none">
+                       DOUBLE TAP/ PINCH TO ZOOM • DRAG TO PAN
                     </div>
                 </section>
-
+                <!-- Diagram Switcher Dropdown -->
+<div class="flex items-center md:hidden gap-3 px-5 md:px-8 py-3 border-b border-border bg-card shrink-0">
+  <span class="text-[10px] uppercase tracking-widest text-muted-foreground whitespace-nowrap">diagram</span>
+  <div class="relative flex-1">
+    <select id="diagram-switcher"
+      class="w-full appearance-none bg-muted/30 border border-border rounded-md px-3 py-1.5 pr-8 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer">
+      <!-- JS will populate options here -->
+    </select>
+    <!-- chevron icon -->
+    <svg class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none size-3 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <!-- prev/next arrows -->
+  <div class="flex gap-1 shrink-0">
+    <button id="switcher-prev" class="p-1.5 rounded-md border border-border bg-muted/30 text-muted-foreground hover:text-foreground transition-colors">
+      <i data-lucide="chevron-left" class="size-3.5"></i>
+    </button>
+    <button id="switcher-next" class="p-1.5 rounded-md border border-border bg-muted/30 text-muted-foreground hover:text-foreground transition-colors">
+      <i data-lucide="chevron-right" class="size-3.5"></i>
+    </button>
+  </div>
+</div>
                 <!-- BOTTOM: Documentation Panel -->
-                <!-- Removed h-[40%] and local overflow. Added mx-auto to center the text nicely -->
-                <section class="shrink-0 p-8 md:p-4 flex flex-col w-full max-w-5xl mx-auto">
-                    <div class="flex items-center justify-between border-b border-border pb-4 mb-2">
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-muted-foreground">Submission Material and Thoughts</h2>
-                        <i data-lucide="file-text" class="size-5 text-muted-foreground"></i>
+                <section class="shrink-0 p-5 md:p-8 flex flex-col w-full max-w-5xl mx-auto">
+                    <div class="flex items-center justify-between border-b border-border pb-4 mb-4">
+                        <h2 class="text-xs md:text-sm font-bold uppercase tracking-wider text-muted-foreground">Explainer</h2>
+                        <i data-lucide="file-text" class="size-5 text-muted-foreground hidden sm:block"></i>
                     </div>
                     
                     <!-- Markdown Content rendered here -->
@@ -123,7 +165,7 @@
         </main>
     </div>
 
-    <!-- Application Logic (Must be type="module" to support ESM imports) -->
+    <!-- Application Logic -->
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

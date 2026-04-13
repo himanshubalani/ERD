@@ -26,31 +26,46 @@
     font-weight: 700;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
-	font-size: larger;
+    font-size: larger;
 }
 
+/* Scrollable code blocks for mobile */
 .delphi-prose pre {
-    white-space: pre-wrap !important; /* Forces text to wrap */
+    white-space: pre-wrap !important; 
     word-break: break-word;
-    overflow-x: hidden; /* Removes the horizontal scrollbar entirely */
+    overflow-x: auto;
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: hsl(var(--card));
     border: 1px solid hsl(var(--border));
+    -webkit-overflow-scrolling: touch;
 }
 
 .delphi-prose code {
     white-space: pre-wrap !important;
 }
 
+/* Makes markdown tables responsive (scrollable on mobile) */
 .delphi-prose table {
     width: 100%;
-    table-layout: fixed; /* Forces columns to stay within the container */
+    display: block; 
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
 }
 
 .delphi-prose td, .delphi-prose th {
-    word-wrap: break-word;
-    white-space: normal;
+    white-space: nowrap; /* Prevents awkward column crushing */
+    padding: 0.75rem;
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+}
+
+.delphi-prose th {
+    background-color: hsl(var(--muted) / 0.5);
+    font-weight: bold;
+    text-align: left;
 }
 
 .delphi-prose p {
@@ -58,7 +73,7 @@
     margin-bottom: 1rem;
 }
 .delphi-prose strong {
-    color: #6366f1; /* Primary Accent */
+    color: #6366f1; 
 }
 .delphi-prose ul {
     list-style-type: square;
@@ -69,14 +84,12 @@
 .delphi-prose li {
     margin-bottom: 0.5rem;
 }
-/* .delphi-prose code {
-    background-color: hsl(var(--muted));
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.85em;
-    color: hsl(var(--foreground));
-} */
- 
+.delphi-prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
 .svg-wrapper {
 	transform-origin: center;
 }
